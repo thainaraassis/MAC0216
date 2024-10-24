@@ -9,13 +9,14 @@
 # NUSP : 13874413
 ##################################################################
 
+DATA_DIR="data"
 
 baixar_arq_url() {
     urls_file=$1
 
     # criando o diretório que armazenará nossos dados, ou seja, os aquivos .csv
-    mkdir -p "$data"
-    wget -nv -i "$urls_file" -P "$data"
+    mkdir -p "$DATA_DIR"
+    wget -nv -i "$urls_file" -P "$DATA_DIR"
 }
 
 if [[ $# -eq 1 ]]; then
