@@ -12,6 +12,8 @@
 DATA_DIR="data"
 COMPLETE_ARQ="$DATA_DIR/arquivocompleto.csv"
 SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenha sido selecionado
+FILTERS=()
+FILTERED_FILE="filtered_data.csv"
 
 # funções obrigatórias
 selecionar_arquivo() {
@@ -33,19 +35,33 @@ selecionar_arquivo() {
     done    
 }
 
-#adicionar_filtro_coluna() {
+adicionar_filtro_coluna() {
 
     # pega a primeira linha do arquivo, que contém as colunas
-#    columns=$(head -n 1 "$SELECTED_FILE")
+    columns=$(head -n 1 "$SELECTED_FILE")
     #  converte a linha em vários "itens", ou seja, separa o nome das colunas
-#    IFS=',' read -ra col <<< "$cabecalho" 
+    IFS=';' read -ra col <<< "$columns" 
 
-#    echo "Escolha uma opção de coluna para o filtro:"
+    echo "Escolha uma opção de coluna para o filtro:"
 
-#    select c in "${col[@]}"; do
+    select c in "${col[@]}"; do
+        if [[ -n "$c" ]]; then
 
-#        echo "Escolha uma opção de valor para $c:"
-#}
+            uniq_values=$(tail -n +2 "$SELECTED_FILE" | cut -d';' -f"$REPLY" | sort | uniq | tr ' ' '_')
+
+            echo "Escolha uma opção de valor para $c:"
+            select val in $uniq_values; do
+                if [[ -n "$val" ]]; then
+                    echo "+++ Adicionado filtro: $c = $val"
+                    FILTERS+=("$c,$REPLY,$val")
+                    aplica_filtros
+                    break
+                fi
+            done
+            break
+        fi
+    done
+}
 
 # limpar_filtros_colunas() {
 
@@ -64,6 +80,34 @@ selecionar_arquivo() {
 
 
 # funções auxiliares
+aplica_filtros() {
+    
+    echo "+++ Arquivo atual: $SELECTED_FILE"
+    echo "+++ Filtros atuais:"
+
+    comando="tail -n +2 \"$SELECTED_FILE\""
+
+    for filter in "${FILTERS[@]}"; do
+        IFS=',' read -r name column value <<< "$filter"
+        comando="$comando | awk -F';' -v val=\"$value\" '\$0 ~ val'"
+    done
+
+    IFS=',' read -r name column value <<< "${FILTERS[0]}"
+    echo "$name = $value"
+    for ((i = 1; i < ${#FILTERS[@]}; i++)); do
+        IFS=',' read -r name column value <<< "${FILTERS[i]}"
+        echo " | $name = $value"
+    done
+
+    # Executa o comando final e salva o resultado no arquivo temporário
+    eval "$comando" > "$FILTERED_FILE"
+
+    num_recl=$(wc -l < "$FILTERED_FILE")
+    echo "+++ Número de reclamações: $num_recl"
+    echo "+++++++++++++++++++++++++++++++++++++++"
+
+}
+
 numero_reclamacoes() {
     # conta todas as linhas do arquivo, exceto a primeira
     num_recl=$(tail -n +2 "$SELECTED_FILE" | wc -l)
