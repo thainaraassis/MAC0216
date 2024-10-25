@@ -14,6 +14,7 @@ COMPLETE_ARQ="$DATA_DIR/arquivocompleto.csv"
 SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenha sido selecionado
 FILTERS=()
 FILTERED_FILE="filtered_data.csv"
+AUX_FILE="$SELECTED_FILE"
 
 # funções obrigatórias
 selecionar_arquivo() {
@@ -28,6 +29,7 @@ selecionar_arquivo() {
         if [[ -n "$arq" ]]; then
             # guardamos o arquivo selecionado
             SELECTED_FILE="$arq"
+            AUX_FILE="$SELECTED_FILE"
             echo "+++ Arquivo atual: $SELECTED_FILE"
             numero_reclamacoes
             break
@@ -64,7 +66,7 @@ adicionar_filtro_coluna() {
 }
 
 # limpar_filtros_colunas() {
-
+    
 # }
 
 # mostrar_duracao_media_reclamacao() {
@@ -81,12 +83,13 @@ adicionar_filtro_coluna() {
 
 # funções auxiliares
 aplica_filtros() {
-    
-    echo "+++ Arquivo atual: $SELECTED_FILE"
+
+    echo "+++ Arquivo atual: $AUX_FILE"
     echo "+++ Filtros atuais:"
 
+    head -n 1 "$SELECTED_FILE" > "$FILTERED_FILE"
     comando="tail -n +2 \"$SELECTED_FILE\""
-
+    
     for filter in "${FILTERS[@]}"; do
         IFS=',' read -r name column value <<< "$filter"
         comando="$comando | awk -F';' -v val=\"$value\" '\$0 ~ val'"
@@ -100,11 +103,13 @@ aplica_filtros() {
     done
 
     # Executa o comando final e salva o resultado no arquivo temporário
-    eval "$comando" > "$FILTERED_FILE"
+    eval "$comando" >> "$FILTERED_FILE"
 
     num_recl=$(wc -l < "$FILTERED_FILE")
     echo "+++ Número de reclamações: $num_recl"
     echo "+++++++++++++++++++++++++++++++++++++++"
+
+    SELECTED_FILE="$FILTERED_FILE"
 
 }
 
