@@ -11,33 +11,55 @@
 
 DATA_DIR="data"
 COMPLETE_ARQ="$DATA_DIR/arquivocompleto.csv"
+SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenha sido selecionado
 
 # funções obrigatórias
 selecionar_arquivo() {
+    echo "Escolha uma opção de arquivo."
 
+    # guarda todos arquivos que existem no nosso diretorio
+    arquivos=$(ls $DATA_DIR/*.csv 2>/dev/null)
+
+    # irá mostrar todas opções para seleção 
+    select arq in $arquivos; do
+        if [[ -n "$arq" ]]; then
+            # guardamos o arquivo selecionado
+            SELECTED_FILE="$arq"
+            echo "+++ Arquivo atual: $SELECTED_FILE"
+            numero_reclamacoes
+            break
+        fi
+    done    
 }
 
-adicionar_filtro_coluna() {
+# adicionar_filtro_coluna() {
 
-}
+# }
 
-limpar_filtros_colunas() {
+# limpar_filtros_colunas() {
 
-}
+# }
 
-mostrar_duracao_media_reclamacao() {
+# mostrar_duracao_media_reclamacao() {
 
-}
+# }
 
-mostrar_ranking_reclamacoes() {
+# mostrar_ranking_reclamacoes() {
 
-}
-mostrar_reclamacoes() {
+# }
+# mostrar_reclamacoes() {
 
-}
+# }
 
 
 # funções auxiliares
+numero_reclamacoes() {
+    # conta todas as linhas do arquivo, exceto a primeira
+    num_recl=$(tail -n +2 "$SELECTED_FILE" | wc -l)
+    echo "+++ Número de reclamações: $num_recl"
+    echo "+++++++++++++++++++++++++++++++++++++++"
+}
+
 baixar_arq_url() {
     urls_file=$1
 
