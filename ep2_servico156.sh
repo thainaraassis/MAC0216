@@ -65,9 +65,14 @@ adicionar_filtro_coluna() {
     done
 }
 
-# limpar_filtros_colunas() {
-    
-# }
+limpar_filtros_colunas() {
+    FILTERS=()
+    SELECTED_FILE="$AUX_FILE"
+
+    echo +++ Filtros removidos
+    echo "+++ Arquivo atual: $SELECTED_FILE"
+    numero_reclamacoes
+}
 
 # mostrar_duracao_media_reclamacao() {
 
