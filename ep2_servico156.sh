@@ -12,6 +12,32 @@
 DATA_DIR="data"
 COMPLETE_ARQ="$DATA_DIR/arquivocompleto.csv"
 
+# funções obrigatórias
+selecionar_arquivo() {
+
+}
+
+adicionar_filtro_coluna() {
+
+}
+
+limpar_filtros_colunas() {
+
+}
+
+mostrar_duracao_media_reclamacao() {
+
+}
+
+mostrar_ranking_reclamacoes() {
+
+}
+mostrar_reclamacoes() {
+
+}
+
+
+# funções auxiliares
 baixar_arq_url() {
     urls_file=$1
 
@@ -40,7 +66,6 @@ junta_arquivos() {
     done
 }
 
-
 operacoes() {
     while true; do
         echo "Escolha uma opção de operação:"
@@ -60,12 +85,11 @@ operacoes() {
             4) mostrar_duracao_media_reclamacao ;;
             5) mostrar_ranking_reclamacoes ;;
             6) mostrar_reclamacoes ;;
-            7) exit 0 ;;
+            7) echo "Fim do programa" ; echo "+++++++++++++++++++++++++++++++++++++++" ; exit 0 ;;
             *) echo "Opção inválida" ;;
         esac
     done
 }
-
 
 
 #########################################################################
