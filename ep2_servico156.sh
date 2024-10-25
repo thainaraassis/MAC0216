@@ -17,11 +17,12 @@ SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenh
 selecionar_arquivo() {
     echo "Escolha uma opção de arquivo."
 
+    cd $DATA_DIR
     # guarda todos arquivos que existem no nosso diretorio
-    arquivos=$(ls $DATA_DIR/*.csv 2>/dev/null)
+    files=$(ls *.csv 2>/dev/null)
 
     # irá mostrar todas opções para seleção 
-    select arq in $arquivos; do
+    select arq in $files; do
         if [[ -n "$arq" ]]; then
             # guardamos o arquivo selecionado
             SELECTED_FILE="$arq"
@@ -32,9 +33,19 @@ selecionar_arquivo() {
     done    
 }
 
-# adicionar_filtro_coluna() {
+#adicionar_filtro_coluna() {
 
-# }
+    # pega a primeira linha do arquivo, que contém as colunas
+#    columns=$(head -n 1 "$SELECTED_FILE")
+    #  converte a linha em vários "itens", ou seja, separa o nome das colunas
+#    IFS=',' read -ra col <<< "$cabecalho" 
+
+#    echo "Escolha uma opção de coluna para o filtro:"
+
+#    select c in "${col[@]}"; do
+
+#        echo "Escolha uma opção de valor para $c:"
+#}
 
 # limpar_filtros_colunas() {
 
