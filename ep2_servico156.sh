@@ -58,8 +58,10 @@ adicionar_filtro_coluna() {
                     echo "+++ Adicionado filtro: $c = $val"
                     FILTERS+=("$c,$val")
 
-                    head -n 1 "$SELECTED_FILE" > "$FILTERED_FILE"
-                    grep "$val" "$SELECTED_FILE" >> "$FILTERED_FILE"
+                    head -n 1 "$SELECTED_FILE" > temp_file
+                    grep "$val" "$SELECTED_FILE" >> temp_file
+                    mv temp_file "$FILTERED_FILE"
+                
                     SELECTED_FILE="$FILTERED_FILE"
 
                     imprime_filtros
@@ -84,12 +86,29 @@ limpar_filtros_colunas() {
 
 # }
 
-# mostrar_ranking_reclamacoes() {
+mostrar_ranking_reclamacoes() {
+    
+    columns=$(head -n 1 "$SELECTED_FILE")
+    IFS=';' read -ra col <<< "$columns"  
 
-# }
-# mostrar_reclamacoes() {
+    echo "Escolha uma opção de coluna para o análise:"
 
-# }
+    select c in "${col[@]}"; do
+        if [[ -n "$c" ]]; then
+
+            ranking=$(tail -n +2 "$SELECTED_FILE" | cut -d';' -f"$REPLY" | sort | uniq -c | sort -n -r | head -n 5)
+            echo +++ "$c" com mais reclamações:
+            echo "$ranking"
+            echo +++++++++++++++++++++++++++++++++++++++
+            break
+        fi
+    done
+}           
+
+mostrar_reclamacoes() {
+    (tail -n +2 "$SELECTED_FILE" | cat)
+    imprime_filtros
+}
 
 
 # funções auxiliares
@@ -102,7 +121,7 @@ imprime_filtros() {
     IFS=',' read -r name value <<< "${FILTERS[0]}"
     output="$name = $value"
     for ((i = 1; i < ${#FILTERS[@]}; i++)); do
-        IFS=',' read -r name column value <<< "${FILTERS[i]}"
+        IFS=',' read -r name value <<< "${FILTERS[i]}"
         output+=" | $name = $value"
     done
 
