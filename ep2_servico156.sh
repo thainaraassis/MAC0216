@@ -15,14 +15,11 @@ SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenh
 FILTERS=()
 FILTERED_FILE="filtered_data.csv"
 AUX_FILE="$SELECTED_FILE"
+files=()
 
 # funções obrigatórias
 selecionar_arquivo() {
     echo "Escolha uma opção de arquivo."
-
-    cd $DATA_DIR
-    # guarda todos arquivos que existem no nosso diretorio
-    files=$(ls *.csv 2>/dev/null)
 
     # irá mostrar todas opções para seleção 
     select arq in $files; do
@@ -82,9 +79,29 @@ limpar_filtros_colunas() {
     numero_reclamacoes
 }
 
-# mostrar_duracao_media_reclamacao() {
+mostrar_duracao_media_reclamacao() {
+    # data de abertura -  1 coluna
+    # data do parecer - 13 coluna
 
-# }
+    IFS='
+    ' 
+    sum_sec=0
+    count=0
+    for linha in $(tail -n +2 "$SELECTED_FILE"); do
+        da=$(cut -d';' -f 1) # data de abertura
+        dp=$(cut -d';' -f 13) # data de parecer
+        
+        diff_sec=$(bc <<< "$(date -d "$dp" +%s) - $(date -d "$da" +%s)")
+        sum_sec=$((sum_sec + diff_sec))
+        count=$((count + 1))
+    done
+
+    days=$(bc <<< "scale=2; $sum_sec / 86400") # um dia tem 86400 segundos
+    aver=$(bc <<< "scale=2; $days / $count")
+
+    echo +++ Duração média da reclamação: $aver dias
+    echo +++++++++++++++++++++++++++++++++++++++
+}
 
 mostrar_ranking_reclamacoes() {
     
@@ -156,7 +173,7 @@ converter_codificacoes() {
 junta_arquivos() {
 
     # coloca o cabeçalho do primeiro arquivo csv no arquivo completo
-    head -n 1 "$DATA_DIR"/*.csv | head -n 1 > "$COMPLETE_ARQ"
+    head -n 1 "$(ls "$DATA_DIR"/*.csv | head -n 1)" > "$COMPLETE_ARQ"
     
     # coloca todas as linhas de todos arquivos, exceto a primeira (nome das colunas)
     for arq in "$DATA_DIR"/*.csv; do
@@ -207,6 +224,9 @@ if [[ $# -eq 1 ]]; then
         baixar_arq_url "$1"
         converter_codificacoes
         junta_arquivos
+        cd $DATA_DIR
+        # guarda todos arquivos que existem no nosso diretorio
+        files=$(ls *.csv 2>/dev/null)
         operacoes
     fi
 
@@ -220,6 +240,9 @@ else
         exit 1
     # se existe, irá executar as opçoes normalmente     
     else
+        cd $DATA_DIR
+        # guarda todos arquivos que existem no nosso diretorio
+        files=$(ls *.csv 2>/dev/null)
         operacoes
     fi
 fi
