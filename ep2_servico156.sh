@@ -49,14 +49,20 @@ adicionar_filtro_coluna() {
     select c in "${col[@]}"; do
         if [[ -n "$c" ]]; then
 
-            uniq_values=$(tail -n +2 "$SELECTED_FILE" | cut -d';' -f"$REPLY" | sort | uniq | tr ' ' '_')
+            uniq_values=$(tail -n +2 "$SELECTED_FILE" | cut -d';' -f"$REPLY" | sort | uniq)
 
             echo "Escolha uma opção de valor para $c:"
+            IFS=$'\n'
             select val in $uniq_values; do
                 if [[ -n "$val" ]]; then
                     echo "+++ Adicionado filtro: $c = $val"
-                    FILTERS+=("$c,$REPLY,$val")
-                    aplica_filtros
+                    FILTERS+=("$c,$val")
+
+                    head -n 1 "$SELECTED_FILE" > "$FILTERED_FILE"
+                    grep "$val" "$SELECTED_FILE" >> "$FILTERED_FILE"
+                    SELECTED_FILE="$FILTERED_FILE"
+
+                    imprime_filtros
                     break
                 fi
             done
@@ -87,35 +93,21 @@ limpar_filtros_colunas() {
 
 
 # funções auxiliares
-aplica_filtros() {
+imprime_filtros() {
 
     echo "+++ Arquivo atual: $AUX_FILE"
     echo "+++ Filtros atuais:"
 
-    head -n 1 "$SELECTED_FILE" > "$FILTERED_FILE"
-    comando="tail -n +2 \"$SELECTED_FILE\""
-    
-    for filter in "${FILTERS[@]}"; do
-        IFS=',' read -r name column value <<< "$filter"
-        comando="$comando | awk -F';' -v val=\"$value\" '\$0 ~ val'"
-    done
 
-    IFS=',' read -r name column value <<< "${FILTERS[0]}"
-    echo "$name = $value"
+    IFS=',' read -r name value <<< "${FILTERS[0]}"
+    output="$name = $value"
     for ((i = 1; i < ${#FILTERS[@]}; i++)); do
         IFS=',' read -r name column value <<< "${FILTERS[i]}"
-        echo " | $name = $value"
+        output+=" | $name = $value"
     done
 
-    # Executa o comando final e salva o resultado no arquivo temporário
-    eval "$comando" >> "$FILTERED_FILE"
-
-    num_recl=$(wc -l < "$FILTERED_FILE")
-    echo "+++ Número de reclamações: $num_recl"
-    echo "+++++++++++++++++++++++++++++++++++++++"
-
-    SELECTED_FILE="$FILTERED_FILE"
-
+    echo "$output"
+    numero_reclamacoes
 }
 
 numero_reclamacoes() {
