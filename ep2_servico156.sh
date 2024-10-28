@@ -10,7 +10,7 @@
 ##################################################################
 
 DATA_DIR="data"
-COMPLETE_ARQ="$DATA_DIR/arquivocompleto.csv"
+COMPLETE_ARQ="arquivocompleto.csv"
 SELECTED_FILE="$COMPLETE_ARQ" # começa com o arquivo completo, caso nenhum tenha sido selecionado
 FILTERS=()
 FILTERED_FILE="filtered_data.csv"
@@ -19,14 +19,17 @@ files=()
 
 # funções obrigatórias
 selecionar_arquivo() {
+    echo " "
     echo "Escolha uma opção de arquivo."
 
     # irá mostrar todas opções para seleção 
     select arq in $files; do
         if [[ -n "$arq" ]]; then
-            # guardamos o arquivo selecionado
+            # guardamos o arquivo selecionado e limpamos os filtros
             SELECTED_FILE="$arq"
-            AUX_FILE="$SELECTED_FILE"
+            # auxiliar para guardarmos o arquivo original e podermos "remover" os filtros
+            AUX_FILE="$SELECTED_FILE" 
+            FILTERS=()
             echo "+++ Arquivo atual: $SELECTED_FILE"
             numero_reclamacoes
             break
@@ -38,9 +41,10 @@ adicionar_filtro_coluna() {
 
     # pega a primeira linha do arquivo, que contém as colunas
     columns=$(head -n 1 "$SELECTED_FILE")
-    #  converte a linha em vários "itens", ou seja, separa o nome das colunas
+    # converte a linha em vários "itens", ou seja, separa o nome das colunas
     IFS=';' read -ra col <<< "$columns" 
 
+    echo " "
     echo "Escolha uma opção de coluna para o filtro:"
 
     select c in "${col[@]}"; do
@@ -48,12 +52,13 @@ adicionar_filtro_coluna() {
 
             uniq_values=$(tail -n +2 "$SELECTED_FILE" | cut -d';' -f"$REPLY" | sort | uniq)
 
+            echo " "
             echo "Escolha uma opção de valor para $c:"
             IFS=$'\n'
             select val in $uniq_values; do
                 if [[ -n "$val" ]]; then
                     echo "+++ Adicionado filtro: $c = $val"
-                    FILTERS+=("$c,$val")
+                    FILTERS+=("$c,$val") # guarda a coluna e o valor para poder printar todos filtros
 
                     head -n 1 "$SELECTED_FILE" > temp_file
                     grep "$val" "$SELECTED_FILE" >> temp_file
@@ -72,7 +77,7 @@ adicionar_filtro_coluna() {
 
 limpar_filtros_colunas() {
     FILTERS=()
-    SELECTED_FILE="$AUX_FILE"
+    SELECTED_FILE="$AUX_FILE" # volta a ser o arquivo original, que guardamos
 
     echo +++ Filtros removidos
     echo "+++ Arquivo atual: $SELECTED_FILE"
@@ -83,21 +88,21 @@ mostrar_duracao_media_reclamacao() {
     # data de abertura -  1 coluna
     # data do parecer - 13 coluna
 
-    IFS='
-    ' 
     sum_sec=0
     count=0
-    for linha in $(tail -n +2 "$SELECTED_FILE"); do
-        da=$(cut -d';' -f 1) # data de abertura
-        dp=$(cut -d';' -f 13) # data de parecer
-        
+
+    while IFS=';' read -r linha; do
+        da=$(echo "$linha" | cut -d';' -f 1) # data de abertura
+        dp=$(echo "$linha" | cut -d';' -f 13) # data de parecer
+
         diff_sec=$(bc <<< "$(date -d "$dp" +%s) - $(date -d "$da" +%s)")
         sum_sec=$((sum_sec + diff_sec))
         count=$((count + 1))
-    done
 
-    days=$(bc <<< "scale=2; $sum_sec / 86400") # um dia tem 86400 segundos
-    aver=$(bc <<< "scale=2; $days / $count")
+    done < <(tail -n +2 "$SELECTED_FILE")
+
+    days=$(bc <<< "$sum_sec / 86400") # um dia tem 86400 segundos
+    aver=$(bc <<< "$days / $count")
 
     echo +++ Duração média da reclamação: $aver dias
     echo +++++++++++++++++++++++++++++++++++++++
@@ -108,6 +113,7 @@ mostrar_ranking_reclamacoes() {
     columns=$(head -n 1 "$SELECTED_FILE")
     IFS=';' read -ra col <<< "$columns"  
 
+    echo " "
     echo "Escolha uma opção de coluna para o análise:"
 
     select c in "${col[@]}"; do
@@ -183,6 +189,7 @@ junta_arquivos() {
 
 operacoes() {
     while true; do
+        echo " "
         echo "Escolha uma opção de operação:"
         echo "1) selecionar_arquivo"
         echo "2) adicionar_filtro_coluna"
