@@ -4,11 +4,12 @@ from peça import Peça
 from movimento import Movimento
 from matriz import Matriz
 from time import sleep
+from jogador import Jogador
 
 class Partida:
     
     def __init__(self, nome_jogador, num_linhas, num_colunas):
-        self.nome_jogador = nome_jogador
+        self.jogador = Jogador(nome_jogador)
         self.num_linhas = int(num_linhas)
         self.num_colunas = int(num_colunas)
         self.pontuacao = 0
@@ -135,7 +136,7 @@ class Partida:
                 self.matriz_jogo[l][j] = " "
 
         self.pontuacao += len(linhas_remover)
-
+        self.jogador.atualizar_pontuacao(len(linhas_remover))
 
     def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """
