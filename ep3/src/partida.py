@@ -5,6 +5,8 @@ from movimento import Movimento
 from matriz import Matriz
 from time import sleep
 from jogador import Jogador
+from datetime import datetime
+import pickle
 
 class Partida:
     
@@ -18,6 +20,8 @@ class Partida:
         self.matriz_jogo = Matriz.devolve_matriz_vazia(self.num_linhas,self.num_colunas)
         self.tela = Tela(self.matriz_jogo) 
         self.nova_peça = False
+        self.nome_arquivo = " "
+        self.exibe_salvamento = False
     
     def jogar(self):
 
@@ -42,7 +46,10 @@ class Partida:
 
             self.tela.limpa_tela()
 
-        self.tela.exibe_comandos_game_over(self.pontuacao)
+        if self.exibe_salvamento:
+            self.tela.exibe_comandos_salvamento_partida()
+        else:    
+            self.tela.exibe_comandos_game_over(self.pontuacao)
  
     def captura_teclas(self):
 
@@ -204,4 +211,20 @@ class Partida:
 
         self.desenha_peça_na_matriz()
 
+    def para_partida(self):
+        """
+        Encerra a partida antes de seu término natural.
+        """
+        self.partida_rodando = False
 
+    def grava_sai_partida(self):
+        """
+        Salva o estado atual da partida e encerra.
+        """
+        time = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.nome_arquivo = f"{self.jogador.nome}_{time}.pkl"
+        with open(self.nome_arquivo, "wb") as f:
+            pickle.dump(self, f)
+
+        self.exibe_salvamento = True
+        self.para_partida()

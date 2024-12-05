@@ -34,7 +34,11 @@ class Tela:
         print("Fim da partida!")
         print("Pontuação final:", pontuacao)
         print("\n*** Jogo Textris - um tetris em modo texto ***")
-        
+    
+    def exibe_comandos_salvamento_partida(self):
+        print("Sua partida foi salva!")
+        print("\n*** Jogo Textris - um tetris em modo texto ***")
+
     def limpa_tela(self):
         """limpa o terminal para atualizar a visualização do jogo """
         os.system('cls || clear')

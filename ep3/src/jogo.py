@@ -1,6 +1,10 @@
 from partida import Partida
+import pickle
 
 class Jogo:
+
+    def __init__(self):
+        self.partida = None
 
     def menu(self):
         print("*** Jogo Textris - um tetris em modo texto ***")
@@ -19,7 +23,7 @@ class Jogo:
             elif opçao == "p":
                 self.exibir_rankings()
             elif opçao == "s":
-                print("Sai do jogo. Implementar alguma coisa?")
+                print("Sai do jogo. Implementar alguma coisa? Sim, exlcuir os .pkl")
                 break
             else:
                 print("Opção inválida!")
@@ -29,15 +33,30 @@ class Jogo:
         nome_jogador = input("Digite o nome do jogador: ")
         num_linhas = input("Digite o número de linhas da tela do jogo: ")
         num_colunas = input("Digite o número de colunas da tela do jogo: ")
-        partida = Partida(nome_jogador, num_linhas, num_colunas)
-        partida.jogar()
+        self.partida = Partida(nome_jogador, num_linhas, num_colunas)
+        self.partida.jogar()
     
     def carregar_partida(self):
-         """
-         abre arquivo com o jogador, a pontuação, a matriz e etc
-         """
+        """
+        Carrega uma partida salva anteriormente.
+        """
+        if not self.partida:
+            print("\nComece uma partida primeiro!\n")
+            return
+        elif self.partida.nome_arquivo == " ":
+            print("\nNão há partidas salvas.\n")
+            return
+        else:
+            with open(self.partida.nome_arquivo, "rb") as f:
+                self.partida = pickle.load(f)
+            self.partida.jogar()
 
     def exibir_rankings(self):
          """
          abre arquivo com todas as pontuações salvas e os respectivos jogadores e data?
          """
+
+    # def sair_jogo(self):
+      #  """
+       # Exclui todos os arquivos .pkl no diretório atual.
+        #"""
