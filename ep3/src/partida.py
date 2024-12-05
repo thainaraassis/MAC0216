@@ -3,6 +3,7 @@ from tela import Tela
 from peça import Peça
 #from movimento import Movimento
 from time import sleep
+import random
 
 class Partida:
     
@@ -29,6 +30,19 @@ class Partida:
 
         return matriz_inicial
 
+    def copia_matriz(self, matriz_ref):
+
+        matriz_copia = []  
+
+        for i in range(len(matriz_ref)):  
+            linha = []  
+            for j in range(len(matriz_ref[0])):  
+                linha.append(matriz_ref[i][j])  
+
+            matriz_copia.append(linha)  
+
+        return matriz_copia
+    
     def desenha_peça_na_matriz(self):
 
         for i in range(len(self.peça_atual.matriz_peça)):  
@@ -40,12 +54,7 @@ class Partida:
 
                     if 0 <= x < len(self.matriz_jogo) and 0 <= y < len(self.matriz_jogo[0]):
                         self.matriz_jogo[x][y] = caracter  
-                        #if x == self.num_linhas - 1:  # Se chegou ao final da linha
-                            #self.nova_peça = True
-                        #Se a peça nao pode se mover mais pra baixo
-                            #self.nova_peça = True
-                        if not self.pode_mover_para_baixo():
-                            self.nova_peça = True
+                        
 
     def apaga_peça_na_matriz(self):
 
@@ -72,7 +81,7 @@ class Partida:
                 self.movimento_horizontal("direita")
                 break
             
-            elif  tecla == key.LEFT:
+            elif tecla == key.LEFT:
                 self.movimento_horizontal("esquerda")
                 break
             
@@ -110,53 +119,52 @@ class Partida:
         Verifica se alguma peça está no centro e no topo da matriz
         se não for possível adicionar uma nova peça sem que ela colida
         """
+
         if self.pode_colocar_na_posicao(matriz_peça, pos_x_peça, pos_y_peça):
             self.partida_rodando = True
         
         else:
             self.partida_rodando = False
-        
 
     def jogar(self):
 
         while self.partida_rodando:
-            #self.verifica_fim_de_jogo(self)
 
             self.desenha_peça_na_matriz()
-            self.tela.matriz_jogo = self.matriz_jogo
+            self.tela.matriz_jogo = self.copia_matriz(self.matriz_jogo)
 
             self.tela.exibe_matriz()
             self.tela.exibe_comandos()
 
-            # captura os movimentos do jogador
+            # Captura os movimentos do jogador
             self.captura_teclas()
 
-            # verifica se uma nova peça deve ser gerada
+            # Verifica se uma nova peça deve ser gerada
             if self.nova_peça:
                 self.peça_atual = Peça(0, ((self.num_colunas - 1) // 2)) 
                 self.nova_peça = False  
                 self.verifica_fim_de_jogo(self.peça_atual.matriz_peça, self.peça_atual.pos_x, self.peça_atual.pos_y)
                 #self.verifica_linhas_completas()  
+                
 
             self.tela.limpa_tela()
 
-        # TRATAR
         print("GAME OVER!!!!!!!")
         self.tela.exibe_comandos_game_over()
-        
+        # TRATAR
 
+    
 
 
 ############################ MUDAR PRA OUTRA CLASSE ############################
 
     def movimento_vertical(self):
         """
-        Move a peça para baixo, se possível. Caso contrário, fixa a peça na grade.
+        se possível move a peça para baixo e desenha na matriz do jogo
         """
         if self.pode_mover_para_baixo():
             self.apaga_peça_na_matriz()
             self.peça_atual.pos_x += 1
-            self.peça_atual.pos_inicial_x += self.peça_atual.pos_x
             self.desenha_peça_na_matriz()
         else:
             self.desenha_peça_na_matriz()
@@ -164,45 +172,44 @@ class Partida:
 
 
     def movimento_horizontal(self,direçao):
+        """
+        se possível move a peça na horizontal e desenha na matriz do jogo
+        """
         if direçao == "direita" and self.pode_mover_para_direita():
             self.apaga_peça_na_matriz()
-            self.peça_atual.pos_y += 1  
-            self.peça_atual.pos_inicial_y = self.peça_atual.pos_y
+            self.peça_atual.pos_y += 1 
             self.desenha_peça_na_matriz()
 
         elif direçao == "esquerda" and self.pode_mover_para_esquerda():
             self.apaga_peça_na_matriz()
             self.peça_atual.pos_y -= 1  
-            self.peça_atual.pos_inicial_y = self.peça_atual.pos_y
             self.desenha_peça_na_matriz()
 
 
     def movimento_rotaciona(self,direçao):
         """
-        rotaciona a peça atual 90° para a direita ou para a esquerda,
-        falta as verificações de limites e colisões.
+        rotaciona a peça atual 90° para a direita ou para a esquerda
         """
-        matriz_atual_peça = self.peça_atual.matriz_peça
 
+        self.peça_auxiliar = Peça(self.peça_atual.pos_x, self.peça_atual.pos_y)
+        matriz_atual_peça = self.peça_auxiliar.matriz_peça = self.copia_matriz(self.peça_atual.matriz_peça)
+
+        # Rotações baseadas na direção
         if direçao == "direita":
-            nova_matriz_p = self.peça_atual.rotacionar_direita(matriz_atual_peça)
+            nova_matriz_rotacionada = self.peça_auxiliar.rotacionar_direita(matriz_atual_peça)
         elif direçao == "esquerda":
-            nova_matriz_p = self.peça_atual.rotacionar_esquerda(matriz_atual_peça)
-        else:
-            print("Direção inválida para rotação!")
-            return
+            nova_matriz_rotacionada = self.peça_auxiliar.rotacionar_esquerda(matriz_atual_peça)
 
-        # mantém a posição inicial da peça
-        nova_pos_x = self.peça_atual.pos_inicial_x
-        nova_pos_y = self.peça_atual.pos_inicial_y
-
-        #if self.verificar_posicao_valida(nova_matriz_p, nova_pos_x, nova_pos_y):
-            # Aplica a rotação
         self.apaga_peça_na_matriz()
-        self.peça_atual.matriz_peça = nova_matriz_p
+
+        if self.pode_colocar_na_posicao(nova_matriz_rotacionada, self.peça_auxiliar.pos_x, self.peça_auxiliar.pos_y):
+            # aplica a rotação na peça atual
+            self.peça_atual.matriz_peça = self.copia_matriz(nova_matriz_rotacionada)
+            
+            self.peça_atual.pos_x = self.peça_auxiliar.pos_x
+            self.peça_atual.pos_y = self.peça_auxiliar.pos_y
+
         self.desenha_peça_na_matriz()
-        #else:
-        #    print("Rotação inválida: ultrapassa os limites ou colide com outra peça.")
 
     def pode_mover_para_esquerda(self):
         """

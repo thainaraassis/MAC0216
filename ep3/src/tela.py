@@ -29,9 +29,10 @@ class Tela:
         print("<Page Down> rotaciona esquerda | <Page Up> rotaciona direita")
         print("<s> sai da partida | <g> grava e sai da partida")
 
+
     def exibe_comandos_game_over(self):
         print("<s> sai da partida | <g> grava e sai da partida")
-
+        
     def limpa_tela(self):
         """limpa o terminal para atualizar a visualização do jogo """
         os.system('cls || clear')
