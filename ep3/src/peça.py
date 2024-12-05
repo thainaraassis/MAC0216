@@ -5,7 +5,7 @@ class Peça:
     def __init__(self, posiçao_x, posiçao_y):
         self.pos_x = posiçao_x
         self.pos_y = posiçao_y
-        self.pos_inicial_x = posiçao_x  # Armazenando a posição inicial
+        self.pos_inicial_x = posiçao_x  
         self.pos_inicial_y = posiçao_y
         self.matriz_peça = self.gera_peça() 
 

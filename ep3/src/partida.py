@@ -123,10 +123,10 @@ class Partida:
             self.tela.exibe_matriz()
             self.tela.exibe_comandos()
 
-            # Captura os movimentos do jogador
+            # captura os movimentos do jogador
             self.captura_teclas()
 
-            # Verifica se uma nova peça deve ser gerada
+            # verifica se uma nova peça deve ser gerada
             if self.nova_peça:
                 self.peça_atual = Peça(0, ((self.num_colunas - 1) // 2)) 
                 self.nova_peça = False  
@@ -175,7 +175,6 @@ class Partida:
         """
         matriz_atual_peça = self.peça_atual.matriz_peça
 
-        # Rotações baseadas na direção
         if direçao == "direita":
             nova_matriz_p = self.peça_atual.rotacionar_direita(matriz_atual_peça)
         elif direçao == "esquerda":
