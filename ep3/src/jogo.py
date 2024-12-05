@@ -5,7 +5,7 @@ class Jogo:
     def menu(self):
         print("*** Jogo Textris - um tetris em modo texto ***")
         while True:
-            print("\nOpções do jogo:")
+            print("Opções do jogo:")
             print("- <i> Iniciar uma nova partida")
             print("- <c> Carregar uma partida gravada e continuá-la")
             print("- <p> Ver as 10 melhores pontuações")

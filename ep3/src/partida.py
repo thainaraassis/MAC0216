@@ -41,9 +41,7 @@ class Partida:
 
             self.tela.limpa_tela()
 
-        print("GAME OVER!!!!!!!")
-        self.tela.exibe_comandos_game_over()
-        # TRATAR ^^
+        self.tela.exibe_comandos_game_over(self.pontuacao)
  
     def captura_teclas(self):
 

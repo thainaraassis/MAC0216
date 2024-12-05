@@ -30,8 +30,10 @@ class Tela:
         print("<s> sai da partida | <g> grava e sai da partida")
 
 
-    def exibe_comandos_game_over(self):
-        print("<s> sai da partida | <g> grava e sai da partida")
+    def exibe_comandos_game_over(self, pontuacao):
+        print("Fim da partida!")
+        print("Pontuação final:", pontuacao)
+        print("\n*** Jogo Textris - um tetris em modo texto ***")
         
     def limpa_tela(self):
         """limpa o terminal para atualizar a visualização do jogo """
