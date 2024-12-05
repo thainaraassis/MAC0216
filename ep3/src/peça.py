@@ -1,4 +1,5 @@
 import random
+from matriz import Matriz
 
 class Peça:
 
@@ -23,7 +24,7 @@ class Peça:
         linhas = len(peça)
         colunas = len(peça[0])
 
-        nova_matriz_peça = self.devolve_matriz_vazia(colunas, linhas)
+        nova_matriz_peça = Matriz.devolve_matriz_vazia(colunas, linhas)
 
         for i in range(linhas):
             for j in range(colunas):
@@ -38,7 +39,7 @@ class Peça:
         linhas = len(peça)
         colunas = len(peça[0])
 
-        nova_matriz_peça = self.devolve_matriz_vazia(colunas, linhas)
+        nova_matriz_peça = Matriz.devolve_matriz_vazia(colunas, linhas)
 
         for i in range(linhas):
             for j in range(colunas):
@@ -91,14 +92,3 @@ class Peça:
 
         return dicionario_peças.get(nome_peça)
     
-    def devolve_matriz_vazia(self, linhas, colunas):
-
-        matriz_inicial = []  
-
-        for _ in range(linhas):  
-            linha = []  
-            for _ in range(colunas):  
-                linha.append(" ")  
-            matriz_inicial.append(linha)  
-
-        return matriz_inicial
