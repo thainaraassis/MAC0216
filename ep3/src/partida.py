@@ -110,6 +110,11 @@ class Partida:
         Verifica se alguma peça está no centro e no topo da matriz
         se não for possível adicionar uma nova peça sem que ela colida
         """
+        if self.pode_colocar_na_posicao(matriz_peça, pos_x_peça, pos_y_peça):
+            self.partida_rodando = True
+        
+        else:
+            self.partida_rodando = False
         
 
     def jogar(self):
@@ -130,11 +135,15 @@ class Partida:
             if self.nova_peça:
                 self.peça_atual = Peça(0, ((self.num_colunas - 1) // 2)) 
                 self.nova_peça = False  
+                self.verifica_fim_de_jogo(self.peça_atual.matriz_peça, self.peça_atual.pos_x, self.peça_atual.pos_y)
                 #self.verifica_linhas_completas()  
 
             self.tela.limpa_tela()
 
-    
+        # TRATAR
+        print("GAME OVER!!!!!!!")
+        self.tela.exibe_comandos_game_over()
+        
 
 
 
