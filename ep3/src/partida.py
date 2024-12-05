@@ -26,7 +26,7 @@ class Partida:
             self.tela.matriz_jogo = Matriz.copia_matriz(self.matriz_jogo)
 
             self.tela.exibe_matriz()
-            self.tela.exibe_comandos()
+            self.tela.exibe_comandos(self.pontuacao)
 
             # Captura os movimentos do jogador
             self.captura_teclas()
@@ -36,7 +36,7 @@ class Partida:
                 self.peça_atual = Peça(0, ((self.num_colunas - 1) // 2)) 
                 self.nova_peça = False  
                 self.verifica_fim_de_jogo(self.peça_atual.matriz_peça, self.peça_atual.pos_x, self.peça_atual.pos_y)
-                #self.verifica_linhas_completas()  
+                self.atualiza_pontuaçao()  
                 
 
             self.tela.limpa_tela()
@@ -83,7 +83,7 @@ class Partida:
                 sleep(1)
                 self.tela.limpa_tela()
                 self.tela.exibe_matriz()
-                self.tela.exibe_comandos()
+                self.tela.exibe_comandos(self.pontuacao)
                 
     def desenha_peça_na_matriz(self):
 
@@ -114,6 +114,30 @@ class Partida:
         """
         a cada atualização de movimento verifica cada linha se esta totalmente preenchida?
         """
+
+        linhas_remover = [] # vai guardar os índices das linhas para remover
+
+        # agora, vamos percorrer todos elementos da matriz
+        # se temos que uma linha todos elementos NÃO são " ", que dizer que a linha está preenchida
+        # e podemos removê-las
+        for i in range(len(self.matriz_jogo)):  
+            linha_preenchida = True  
+
+            for c in self.matriz_jogo[i]:  
+                if c == " ":  
+                    linha_preenchida = False
+                    break  
+
+            if linha_preenchida:  
+                linhas_remover.append(i)
+
+        # remover as linhas completas
+        for l in linhas_remover:
+            for j in range(self.num_colunas):
+                self.matriz_jogo[l][j] = " "
+
+        self.pontuacao += len(linhas_remover)
+
 
     def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """

@@ -20,10 +20,10 @@ class Tela:
 
         print("+" + "-" * (len (self.matriz_tela[0])) + "+")  
 
-    def exibe_comandos(self):
+    def exibe_comandos(self, pontuacao):
         """exibe as instruções do jogo """
 
-        print("\nPontuação: vem ai")
+        print("\nPontuação:", pontuacao)
         print("Teclas do jogo:")
         print("← move esquerda | → move direita | ↓ move baixo")
         print("<Page Down> rotaciona esquerda | <Page Up> rotaciona direita")
