@@ -20,7 +20,6 @@ class Partida:
         self.matriz_jogo = Matriz.devolve_matriz_vazia(self.num_linhas,self.num_colunas)
         self.tela = Tela(self.matriz_jogo) 
         self.nova_peça = False
-        self.nome_arquivo = " "
         self.exibe_salvamento = False
     
     def jogar(self):
@@ -222,9 +221,11 @@ class Partida:
         Salva o estado atual da partida e encerra.
         """
         time = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.nome_arquivo = f"{self.jogador.nome}_{time}.pkl"
-        with open(self.nome_arquivo, "wb") as f:
+        nome_arquivo = f"{self.jogador.nome}_{time}.pkl"
+        with open(nome_arquivo, "wb") as f:
             pickle.dump(self, f)
 
+        from jogo import Jogo # importação localizada
+        Jogo.arquivos_gravados.append(nome_arquivo)
         self.exibe_salvamento = True
         self.para_partida()

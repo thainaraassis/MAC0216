@@ -1,7 +1,10 @@
 from partida import Partida
 import pickle
+import os
 
 class Jogo:
+
+    arquivos_gravados =[]
 
     def __init__(self):
         self.partida = None
@@ -23,7 +26,7 @@ class Jogo:
             elif opçao == "p":
                 self.exibir_rankings()
             elif opçao == "s":
-                print("Sai do jogo. Implementar alguma coisa? Sim, exlcuir os .pkl")
+                self.sair_jogo()
                 break
             else:
                 print("Opção inválida!")
@@ -40,14 +43,17 @@ class Jogo:
         """
         Carrega uma partida salva anteriormente.
         """
-        if not self.partida:
-            print("\nComece uma partida primeiro!\n")
-            return
-        elif self.partida.nome_arquivo == " ":
+        if not self.arquivos_gravados:
             print("\nNão há partidas salvas.\n")
             return
         else:
-            with open(self.partida.nome_arquivo, "rb") as f:
+            print("\nPartidas salvas:\n")
+            for item in self.arquivos_gravados:
+                print(item)
+
+            nome_arquivo = input("\nDigite o nome da partida que deseja retomar:\n")
+
+            with open(nome_arquivo, "rb") as f:
                 self.partida = pickle.load(f)
             self.partida.jogar()
 
@@ -56,7 +62,9 @@ class Jogo:
          abre arquivo com todas as pontuações salvas e os respectivos jogadores e data?
          """
 
-    # def sair_jogo(self):
-      #  """
-       # Exclui todos os arquivos .pkl no diretório atual.
-        #"""
+    def sair_jogo(self):
+        """
+        Exclui todos os arquivos .pkl no diretório atual.
+        """
+        for arq in self.arquivos_gravados:
+            os.remove(arq)
