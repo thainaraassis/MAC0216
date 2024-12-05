@@ -1,4 +1,5 @@
 from partida import Partida
+from ranking import Ranking
 import pickle
 import os
 
@@ -58,9 +59,8 @@ class Jogo:
             self.partida.jogar()
 
     def exibir_rankings(self):
-         """
-         abre arquivo com todas as pontuações salvas e os respectivos jogadores e data?
-         """
+        ranking = Ranking()  
+        ranking.exibir_rankings()
 
     def sair_jogo(self):
         """

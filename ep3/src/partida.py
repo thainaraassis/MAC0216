@@ -5,6 +5,7 @@ from movimento import Movimento
 from matriz import Matriz
 from time import sleep
 from jogador import Jogador
+from ranking import Ranking
 from datetime import datetime
 import pickle
 
@@ -48,6 +49,7 @@ class Partida:
         if self.exibe_salvamento:
             self.tela.exibe_comandos_salvamento_partida()
         else:    
+            Ranking.ranks.append(self.jogador)
             self.tela.exibe_comandos_game_over(self.pontuacao)
  
     def captura_teclas(self):
