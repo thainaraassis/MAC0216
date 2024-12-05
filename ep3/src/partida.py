@@ -105,7 +105,7 @@ class Partida:
         a cada atualização de movimento verifica cada linha se esta totalmente preenchida?
         """
 
-    def verifica_fim_de_jogo(self):
+    def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """
         Verifica se alguma peça está no centro e no topo da matriz
         se não for possível adicionar uma nova peça sem que ela colida
@@ -262,7 +262,7 @@ class Partida:
 
         return True  
 
-    def verifica_posicao_rotaçao(self, nova_matriz_peça, nova_pos_x, nova_pos_y):
+    def pode_colocar_na_posicao(self, nova_matriz_peça, nova_pos_x, nova_pos_y):
         """
         verifica se a nova matriz da peça pode ser colocada na nova posição sem ultrapassar limites
         ou colidir com outras peças
