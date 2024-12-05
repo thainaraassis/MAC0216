@@ -136,13 +136,31 @@ class Partida:
             if linha_preenchida:  
                 linhas_remover.append(i)
 
-        # remover as linhas completas
-        for l in linhas_remover:
-            for j in range(self.num_colunas):
-                self.matriz_jogo[l][j] = " "
+        # remover as linhas completas e "descer" as linhas acima delas
+        linhas_remover.sort()
 
-        self.pontuacao += len(linhas_remover)
-        self.jogador.atualizar_pontuacao(len(linhas_remover))
+        for lin in linhas_remover:
+            for i in range(lin, 0, -1):  
+                for j in range(self.num_colunas):  
+                    self.matriz_jogo[i][j] = self.matriz_jogo[i - 1][j]  # substitui pela linha acima
+        
+        # limpar a primeira linha
+        for j in range(self.num_colunas):
+            self.matriz_jogo[0][j] = " "
+        
+        # esquema de pontuação
+        pontos = 0
+        if(len(linhas_remover) == 1):
+            pontos = 1
+        elif(len(linhas_remover) == 2):
+            pontos = 3
+        elif(len(linhas_remover) == 3):
+            pontos = 5
+        elif(len(linhas_remover) >= 4):
+            pontos = 7
+
+        self.pontuacao += pontos
+        self.jogador.atualizar_pontuacao(pontos)
 
     def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """
