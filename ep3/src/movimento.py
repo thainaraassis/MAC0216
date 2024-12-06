@@ -3,37 +3,43 @@ class Movimento:
     @staticmethod
     def pode_mover_para_esquerda(matriz_da_peça, matriz_do_jogo, pos_x_peça, pos_y_peça):
         """
-        verifica se a peça pode se mover para a esquerda
+        Verifica se a peça pode se mover para a esquerda.
         """
-        primeira_coluna_peça = 0
+        for i in range(len(matriz_da_peça)):  
+            for j in range(len(matriz_da_peça[0])):  
+                if matriz_da_peça[i][j] != " ":  
+                    coluna_a_esquerda = j - 1  
 
-        for i in range(len(matriz_da_peça)):
-            if matriz_da_peça[i][primeira_coluna_peça] != " ":
-                x = pos_x_peça + i
-                y = pos_y_peça + primeira_coluna_peça - 1  
+                    # verifica as células na borda esquerda ou que possuem " " à esquerda na peça
+                    if coluna_a_esquerda < 0 or matriz_da_peça[i][coluna_a_esquerda] == " ":
+                        x = pos_x_peça + i  # coordenada x na matriz do jogo
+                        y = pos_y_peça + j - 1  # coordenada y na matriz do jogo
 
-                # colide com outra peça ou a grade à esquerda
-                if y < 0 or matriz_do_jogo[x][y] != " ":
-                    return False  
-        return True
+                        # verifica limites ou colisão
+                        if y < 0 or matriz_do_jogo[x][y] != " ":
+                            return False  
+
+        return True  
 
     @staticmethod
     def pode_mover_para_direita(matriz_da_peça, matriz_do_jogo, pos_x_peça, pos_y_peça):
         """
-        verifica se a peça pode se mover para a direita
+        Verifica se a peça pode se mover para a direita.
         """
-        ultima_coluna_peça = len(matriz_da_peça[0]) - 1
+        for i in range(len(matriz_da_peça)):  
+            for j in range(len(matriz_da_peça[0])):  
+                if matriz_da_peça[i][j] != " ": 
+                    coluna_a_direita = j + 1  
 
-        for i in range(len(matriz_da_peça)):              
-            if matriz_da_peça[i][ultima_coluna_peça] != " ":  
-                x = pos_x_peça + i  
-                y = pos_y_peça + ultima_coluna_peça + 1  
+                    # verifica as células na borda direita ou que possuem " " à direita na peça
+                    if coluna_a_direita >= len(matriz_da_peça[0]) or matriz_da_peça[i][coluna_a_direita] == " ":
+                        x = pos_x_peça + i  # coordenada x na matriz do jogo
+                        y = pos_y_peça + j + 1  # coordenada y  na matriz do jogo
 
-                # colide com outra peça ou a grade à direita
-                if y >= len(matriz_do_jogo[0]) or matriz_do_jogo[x][y] != " ":
-                    return False  
-
-        return True  
+                        # verifica limites ou colisão
+                        if y >= len(matriz_do_jogo[0]) or matriz_do_jogo[x][y] != " ":
+                            return False  
+        return True 
 
     @staticmethod
     def pode_mover_para_baixo(matriz_da_peça, matriz_do_jogo, pos_x_peça, pos_y_peça):
