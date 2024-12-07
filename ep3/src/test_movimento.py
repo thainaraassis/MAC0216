@@ -1,5 +1,6 @@
 import pytest
 from movimento import Movimento
+from partida import Partida
 
 
 @pytest.fixture()
