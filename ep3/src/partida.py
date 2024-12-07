@@ -10,8 +10,22 @@ from datetime import datetime
 import pickle
 
 class Partida:
+    """
+    Classe que representa uma partida de Tetris.
+
+    Ela gerencia a execução do jogo, capturando os movimentos do jogador, gerenciando a matriz de jogo, 
+    e verificando as condições de término, além de manipular as peças e pontuação.
+    """
     
     def __init__(self, nome_jogador, num_linhas, num_colunas):
+        """
+        Constrói uma nova partida.
+
+        @param nome_jogador: Nome do jogador.
+        @param num_linhas: Número de linhas da matriz de jogo.
+        @param num_colunas: Número de colunas da matriz de jogo.
+        """
+
         self.jogador = Jogador(nome_jogador)
         self.num_linhas = int(num_linhas)
         self.num_colunas = int(num_colunas)
@@ -24,6 +38,12 @@ class Partida:
         self.exibe_salvamento = False
     
     def jogar(self):
+        """
+        Inicia o loop principal do jogo, onde a peça é desenhada na matriz e o jogador captura teclas
+        para mover as peças, além de verificar se a partida terminou.
+
+        O loop continua até que a partida seja encerrada, seja por término ou por uma ação do jogador.
+        """
 
         while self.partida_rodando:
 
@@ -53,6 +73,12 @@ class Partida:
             self.tela.exibe_comandos_game_over(self.pontuacao)
  
     def captura_teclas(self):
+        """
+        Captura a entrada de teclas do jogador para realizar os movimentos da peça.
+
+        O jogador pode mover a peça para baixo, para a esquerda, para a direita ou rotacioná-la.
+        Também pode salvar ou encerrar a partida.
+        """
 
         while True:
             tecla = readkey()
@@ -93,6 +119,11 @@ class Partida:
                 self.tela.exibe_comandos(self.pontuacao)
                 
     def desenha_peça_na_matriz(self):
+        """
+        Desenha a peça atual na matriz do jogo, posicionando-a na posição indicada por `pos_x` e `pos_y`.
+
+        A peça é desenhada na matriz de jogo, modificando a matriz conforme sua posição.
+        """
 
         for i in range(len(self.peça_atual.matriz_peça)):  
             for j in range(len(self.peça_atual.matriz_peça[i])):  
@@ -106,6 +137,11 @@ class Partida:
                         
 
     def apaga_peça_na_matriz(self):
+        """
+        Apaga a peça atual da matriz do jogo.
+
+        A peça é apagada da matriz de jogo, substituindo as posições ocupadas por ela com espaços.
+        """
 
         for i in range(len(self.peça_atual.matriz_peça)):
             for j in range(len(self.peça_atual.matriz_peça[i])):
@@ -166,10 +202,12 @@ class Partida:
 
     def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """
-        Verifica se alguma peça está no centro e no topo da matriz
-        se não for possível adicionar uma nova peça sem que ela colida
-        """
+        Verifica se a nova peça pode ser colocada no topo da matriz sem colidir com outras peças.
 
+        @param matriz_peça: A matriz da peça que será verificada.
+        @param pos_x_peça: A posição x da peça na matriz de jogo.
+        @param pos_y_peça: A posição y da peça na matriz de jogo.
+        """
         if Movimento.pode_colocar_na_posicao(matriz_peça, self.matriz_jogo, pos_x_peça, pos_y_peça):
             self.partida_rodando = True
         
@@ -179,7 +217,9 @@ class Partida:
     
     def movimento_vertical(self):
         """
-        se possível move a peça para baixo e desenha na matriz do jogo
+        Move a peça para baixo, se possível, e redesenha a matriz de jogo.
+
+        Se a peça não puder se mover para baixo, marca que uma nova peça deve ser gerada.
         """
         if Movimento.pode_mover_para_baixo(self.peça_atual.matriz_peça, self.matriz_jogo, self.peça_atual.pos_x, self.peça_atual.pos_y):
             self.apaga_peça_na_matriz()
@@ -192,8 +232,11 @@ class Partida:
 
     def movimento_horizontal(self,direçao):
         """
-        se possível move a peça na horizontal e desenha na matriz do jogo
+        Move a peça para a esquerda ou direita, se possível, e redesenha a matriz de jogo.
+
+        @param direçao: A direção do movimento ("direita" ou "esquerda").
         """
+
         if direçao == "direita" and Movimento.pode_mover_para_direita(self.peça_atual.matriz_peça, self.matriz_jogo, self.peça_atual.pos_x, self.peça_atual.pos_y):
             self.apaga_peça_na_matriz()
             self.peça_atual.pos_y += 1 
@@ -207,7 +250,9 @@ class Partida:
 
     def movimento_rotaciona(self,direçao):
         """
-        rotaciona a peça atual 90° para a direita ou para a esquerda
+        Rotaciona a peça atual 90° para a direita ou para a esquerda, se possível.
+
+        @param direçao: A direção da rotação ("direita" ou "esquerda").
         """
 
         self.peça_auxiliar = Peça(self.peça_atual.pos_x, self.peça_atual.pos_y)
