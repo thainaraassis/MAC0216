@@ -8,12 +8,13 @@ class Peça:
         self.pos_y = posiçao_y
         self.matriz_peça = self.gera_peça() 
 
-    def gera_peça(self):
+    def gera_peça(self, nome_aleatorio=None):
         """
         gera uma peça aleatória e retorna a matriz da peça 
         """
         nomes_peças = ["I", "J", "L", "O", "S", "T", "Z"]
-        nome_aleatorio = nomes_peças[random.randint(0, len(nomes_peças)-1)]
+        if nome_aleatorio == None:  
+            nome_aleatorio = nomes_peças[random.randint(0, len(nomes_peças)-1)]
 
         return self.peças_do_textris(nome_aleatorio)
     

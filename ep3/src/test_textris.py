@@ -1,7 +1,7 @@
 import pytest
-from partida import Partida
-from peça import Peça
-from movimento import Movimento
+from src.partida import Partida
+from src.peça import Peça
+from src.movimento import Movimento
 
 matriz_jogo_NAO_DIREITA_BAIXO_esquerda = [
             [ " ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -204,13 +204,13 @@ class Test_Partida():
 
 class Test_Peça():
 
-    def test_gera_peça_aleatoria(self, peça_teste, dic_peças):
-        # No jogo é gerado aleatoriamente, contudo para fins de testes
-        # geraremos uma peça específica
+    def test_gera_peça_aleatoria(self, dic_peças):
+
+        peça_teste = Peça(0,0)
 
         foi_gerada = False
         #foi_gerada =  peça_teste.matriz_jogo in dic_peças
-        for alguma_peça in dic_peças:
+        for alguma_peça in dic_peças.values():
             if peça_teste.matriz_peça == alguma_peça:
                 foi_gerada = True
                 break
@@ -243,9 +243,6 @@ class Test_Peça():
 
 class Test_Movimento():
     
-
-
-
     def test_pode_mover_peça_para_baixo(self, partida_teste):
         
         partida_teste.desenha_peça_na_matriz()
@@ -256,19 +253,21 @@ class Test_Movimento():
 
     def test_nao_pode_mover_peça_para_baixo(self, partida_teste):
 
-        partida_teste.peça_atual.pos_x = 5
-        partida_teste.peça_atual.pos_y = 7
+        # inclui a peça mais abaixo
+        partida_teste.peça_atual.pos_x = 7
+        partida_teste.peça_atual.pos_y = 5
         partida_teste.desenha_peça_na_matriz()
 
+        # inclui a peça mais acima
         partida_teste.peça_atual.gera_peça("T")
-        partida_teste.peça_atual.pos_x = 3
-        partida_teste.peça_atual.pos_y = 6
+        partida_teste.peça_atual.pos_x = 5
+        partida_teste.peça_atual.pos_y = 5
         partida_teste.desenha_peça_na_matriz()
 
         nao_pode_mover_baixo = Movimento.pode_mover_para_baixo(partida_teste.peça_atual.matriz_peça, partida_teste.matriz_jogo, partida_teste.peça_atual.pos_x, partida_teste.peça_atual.pos_y)
         
-        #assert nao_pode_mover_baixo == False
-        assert partida_teste.matriz_jogo == matriz_jogo_NAO_DIREITA_BAIXO_esquerda
+        assert nao_pode_mover_baixo == False
+
     def test_pode_mover_peça_para_esquerda(self, partida_teste):
     
         partida_teste.desenha_peça_na_matriz()
@@ -279,19 +278,18 @@ class Test_Movimento():
 
     def test_nao_pode_mover_peça_para_esquerda(self, partida_teste):
 
-        partida_teste.peça_atual.pos_x = 3 
-        partida_teste.peça_atual.pos_y = 6 
+        partida_teste.peça_atual.pos_x = 0
+        partida_teste.peça_atual.pos_y = 1
         partida_teste.desenha_peça_na_matriz()
 
         partida_teste.peça_atual.gera_peça("T")
-        partida_teste.peça_atual.pos_x = 5
-        partida_teste.peça_atual.pos_y = 7
+        partida_teste.peça_atual.pos_x = 0
+        partida_teste.peça_atual.pos_y = 4
         partida_teste.desenha_peça_na_matriz()
 
         nao_pode_mover_esquerda = Movimento.pode_mover_para_esquerda(partida_teste.peça_atual.matriz_peça, partida_teste.matriz_jogo, partida_teste.peça_atual.pos_x, partida_teste.peça_atual.pos_y)
         
-        #assert nao_pode_mover_esquerda == False
-        assert partida_teste.matriz_jogo == matriz_jogo_NAO_DIREITA_BAIXO_esquerda
+        assert nao_pode_mover_esquerda == False
 
     def test_pode_mover_peça_para_direita(self, partida_teste):
     
@@ -304,23 +302,20 @@ class Test_Movimento():
 
     def test_nao_pode_mover_peça_para_direita(self, partida_teste):
 
-        partida_teste.peça_atual.pos_x = 5
-        partida_teste.peça_atual.pos_y = 7
+        partida_teste.peça_atual.pos_x = 0
+        partida_teste.peça_atual.pos_y = 4
         partida_teste.desenha_peça_na_matriz()
 
         partida_teste.peça_atual.gera_peça("T")
-        partida_teste.peça_atual.pos_x = 3
-        partida_teste.peça_atual.pos_y = 6
+        partida_teste.peça_atual.pos_x = 0
+        partida_teste.peça_atual.pos_y = 1
         partida_teste.desenha_peça_na_matriz()
 
         nao_pode_mover_direita = Movimento.pode_mover_para_direita(partida_teste.peça_atual.matriz_peça, partida_teste.matriz_jogo, partida_teste.peça_atual.pos_x, partida_teste.peça_atual.pos_y)
         
-        #assert nao_pode_mover_direita == False
-        assert partida_teste.matriz_jogo == matriz_jogo_NAO_DIREITA_BAIXO_esquerda
+        assert nao_pode_mover_direita == False
 
     def test_pode_colocar_peça(self, partida_teste):
-
-        partida_teste.desenha_peça_na_matriz()
 
         pode_colocar_peça = Movimento.pode_colocar_na_posicao(partida_teste.peça_atual.matriz_peça, partida_teste.matriz_jogo, partida_teste.peça_atual.pos_x, partida_teste.peça_atual.pos_y)
         
