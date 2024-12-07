@@ -54,9 +54,12 @@ class Jogo:
 
             nome_arquivo = input("\nDigite o nome da partida que deseja retomar:\n")
 
-            with open(nome_arquivo, "rb") as f:
-                self.partida = pickle.load(f)
-            self.partida.jogar()
+            if os.path.exists(nome_arquivo):
+                with open(nome_arquivo, "rb") as f:
+                    self.partida = pickle.load(f)
+                self.partida.jogar()
+            else:
+                print("\nEssa partida não existe.\n")
 
     def exibir_rankings(self):
         ranking = Ranking()  
