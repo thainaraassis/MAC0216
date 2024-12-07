@@ -2,15 +2,33 @@ import random
 from matriz import Matriz
 
 class Peça:
+    """
+    Classe que representa uma peça do jogo, com métodos para gerar, rotacionar e manipular sua posição na matriz.
+
+    Cada peça é gerada aleatoriamente a partir de um conjunto de formas, e possui métodos para rotacioná-la 
+    e definir sua posição na matriz de jogo.
+    """
 
     def __init__(self, posiçao_x, posiçao_y):
+        """
+        Inicializa uma nova peça na posição especificada.
+
+        @param posiçao_x: A coordenada x da peça na matriz de jogo.
+        @param posiçao_y: A coordenada y da peça na matriz de jogo.
+        """
         self.pos_x = posiçao_x
         self.pos_y = posiçao_y
         self.matriz_peça = self.gera_peça() 
 
     def gera_peça(self, nome_aleatorio=None):
         """
-        gera uma peça aleatória e retorna a matriz da peça 
+        Gera uma peça aleatória ou uma peça específica se o nome for fornecido.
+
+        Caso o parâmetro `nome_aleatorio` não seja fornecido, a peça será gerada aleatoriamente.
+
+        @param nome_aleatorio: O nome da peça (ex: "T", "O", "L"). Se não fornecido, a peça será aleatória.
+
+        @return: A matriz que representa a peça gerada.
         """
         nomes_peças = ["I", "J", "L", "O", "S", "T", "Z"]
         if nome_aleatorio == None:  
@@ -20,8 +38,13 @@ class Peça:
     
     def rotacionar_direita(self, peça):
         """
-        rotaciona a matriz da peça 90° para a direita (sentido horário).
+        Rotaciona a matriz da peça 90° para a direita (sentido horário).
+
+        @param peça: A matriz que representa a peça a ser rotacionada.
+
+        @return: A nova matriz da peça após a rotação.
         """
+
         linhas = len(peça)
         colunas = len(peça[0])
 
@@ -35,8 +58,13 @@ class Peça:
     
     def rotacionar_esquerda(self, peça):
         """
-        rotaciona a matriz da peça 90° para a esquerda (sentido anti-horário).
+        Rotaciona a matriz da peça 90° para a esquerda (sentido anti-horário).
+
+        @param peça: A matriz que representa a peça a ser rotacionada.
+
+        @return: A nova matriz da peça após a rotação.
         """
+
         linhas = len(peça)
         colunas = len(peça[0])
 
@@ -49,6 +77,14 @@ class Peça:
         return nova_matriz_peça
 
     def peças_do_textris(self, nome_peça):
+        """
+        Retorna a matriz que representa a forma da peça com base no nome fornecido.
+
+        @param nome_peça: O nome da peça (ex: "I", "O", "L", etc.).
+
+        @return: A matriz da peça correspondente ao nome fornecido.
+        """
+        
         dicionario_peças = {
             "I" :   [   ['&'],
                         ['&'],
