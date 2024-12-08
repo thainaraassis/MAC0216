@@ -151,7 +151,19 @@ class Partida:
 
     def atualiza_pontuaçao(self):
         """
-        a cada atualização de movimento verifica cada linha se esta totalmente preenchida?
+        Atualiza a pontuação e remove linhas preenchidas da matriz do jogo.
+
+        Este método verifica todas as linhas da matriz do jogo para identificar quais estão totalmente preenchidas.
+        As linhas preenchidas são removidas, e as linhas acima delas são "descidas" para preencher o espaço vazio.
+        A pontuação é atualizada com base no número de linhas removidas.
+
+        Esquema de pontuação:
+        - 1 linha: +1 ponto
+        - 2 linhas: +3 pontos
+        - 3 linhas: +5 pontos
+        - 4 ou mais linhas: +7 pontos
+
+        @note O método também atualiza a pontuação do jogador associado à partida.
         """
 
         linhas_remover = [] # vai guardar os índices das linhas para remover
@@ -195,6 +207,7 @@ class Partida:
 
         self.pontuacao += pontos
         self.jogador.atualizar_pontuacao(pontos)
+
 
     def verifica_fim_de_jogo(self, matriz_peça, pos_x_peça, pos_y_peça):
         """
@@ -271,16 +284,29 @@ class Partida:
 
         self.desenha_peça_na_matriz()
 
+
     def para_partida(self):
         """
         Encerra a partida antes de seu término natural.
+
+        Este método altera o estado de 'partida_rodando' para 'False', sinalizando que a partida foi encerrada 
+        de forma antecipada. Pode ser utilizado para interromper a partida em situações como salvamento ou saída.
         """
+
         self.partida_rodando = False
+
 
     def grava_sai_partida(self):
         """
         Salva o estado atual da partida e encerra.
+
+        Este método salva o estado atual da partida em um arquivo no formato .pkl. O nome do arquivo
+        inclui o nome do jogador e o timestamp do momento em que o salvamento foi feito. Após salvar
+        o estado, a partida é encerrada chamando o método 'para_partida'.
+
+        @note O arquivo gerado é registrado no atributo 'arquivos_gravados' da classe 'Jogo'.
         """
+        
         time = datetime.now().strftime("%Y%m%d_%H%M%S")
         nome_arquivo = f"{self.jogador.nome}_{time}.pkl"
         with open(nome_arquivo, "wb") as f:

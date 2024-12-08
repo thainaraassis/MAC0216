@@ -76,7 +76,14 @@ class Jogo:
     def carregar_partida(self):
         """
         Carrega uma partida salva anteriormente.
+
+        Este método verifica se há arquivos de partida salvos registrados no atributo 'arquivos_gravados'.
+        Caso existam, exibe os nomes das partidas disponíveis e solicita ao jogador que escolha uma para carregar.
+        A partida selecionada será carregada e executada.
+
+        @note Se o arquivo escolhido não existir no diretório, uma mensagem será exibida e o carregamento será cancelado.
         """
+
         if not self.arquivos_gravados:
             print("\nNão há partidas salvas.\n")
             return
@@ -95,12 +102,23 @@ class Jogo:
                 print("\nEssa partida não existe.\n")
 
     def exibir_rankings(self):
+        """
+        Exibe os rankings do jogo.
+
+        O método utiliza a classe 'Ranking' para exibir as melhores pontuações já alcançadas,
+        acompanhadas pelos nomes dos respectivos jogadores.
+        """
+
         ranking = Ranking()  
         ranking.exibir_rankings()
 
     def sair_jogo(self):
         """
-        Exclui todos os arquivos .pkl no diretório atual.
+        Exclui todos os arquivos de partidas salvos no diretório atual.
+
+        O método remove todos os arquivos registrados no atributo 'arquivos_gravados',
+        garantindo que os dados de partidas anteriores sejam excluídos do sistema.
         """
+        
         for arq in self.arquivos_gravados:
             os.remove(arq)
