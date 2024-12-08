@@ -1,16 +1,26 @@
-# EP3 - TEXTRIS
+# EP3 - TEXTRIS 🕹️🧩👾
 
-### AUTORES: 
+## AUTORES: 
 
-- Júlia Calixto Rosa - 13749490 - juliacalixtorosa@usp.br
+- Júlia Calixto Rosa        - 13749490 - juliacalixtorosa@usp.br
 - Thainara de Assis Goulart - 13874413 - thainaraassisgoulart@usp.br
 
-### DESCRIÇÃO:
+## DESCRIÇÃO:
 
-Textris é uma versão simplificada do clássico jogo de Tetris, desenvolvida para ser jogada no terminal. O jogo exibe um tabuleiro de Tetris em formato de matriz no terminal, e o jogador pode controlar as peças utilizando as teclas do teclado.
+Textris é uma versão simplificada do clássico jogo **Tetris**, desenvolvida para ser jogada no terminal e na **forma de texto**. O jogo exibe um tabuleiro de Tetris em formato de matriz no terminal, e o jogador pode controlar as peças utilizando as teclas do teclado.
 
-### COMO EXECUTAR:
+Suas funcionalidades incluem:
+- Iniciar uma nova partida.
+- Gravar partidas.
+- Carregar partidas gravadas.
+- Exibir rankings das 10 melhores pontuações.
+- Encerrar partidas e jogos.
 
+A implementação do projeto segue os princípios da programação orientada a objetos e está devidamente documentada e testada.
+
+## COMO EXECUTAR:
+
+### **Passo a Passo**
 - Utilizamos um ambiente virtual para executar o programa. Para isso, siga os passos abaixo:
 
     1. Criar um Ambiente Virtual:
@@ -46,22 +56,60 @@ Textris é uma versão simplificada do clássico jogo de Tetris, desenvolvida pa
         deactivate
         ```
 
+### Gerando a Documentação
 - Para gerar a documentação, siga os passos abaixo:
 
-### TESTES:
+    1. Certifique-se de que o Doxygen está instalado: 
+        ```bash
+        sudo apt install doxygen
+        ```
+    
+    2. Geração da documentação:
+        ```bash
+        make doc
+        ```
 
-Foram realizados testes unitários utilizando a ferramenta pytest para garantir o funcionamento correto das principais funcionalidades do sistema. Os testes estão localizados na pasta `test/`, e cada arquivo de teste corresponde a um conjunto de verificações para os principais métodos e componentes que são essenciais para o funcionamento do jogo.
+    3. Acesse a documentação gerada no navegador:
+        ```bash
+        Abra o arquivo docs/html/index.html.
+        ```
 
-### DEPENDÊNCIAS:
 
-- Sistema Operacional: Ubuntu 24.04 LTS
-- Python: 3.12.3
-- Pacotes:
+## TESTES:
+
+Foram realizados testes unitários utilizando a ferramenta pytest para garantir o funcionamento correto das principais funcionalidades do sistema. 
+
+Os testes estão localizados na pasta `test/`, e cada arquivo de teste corresponde a um conjunto de verificações para os principais métodos e componentes que são essenciais para o funcionamento do jogo.
+
+### Executando os Testes
+- Para executar os testes, rode o comando:
+
+    ```bash
+    make test
+    ```
+
+## DEPENDÊNCIAS:
+
+- **Sistema Operacional**: Ubuntu 24.04 LTS
+- **Python**: 3.12.3
+
+    Você pode verificar a versão do python com:
+
+    ```bash
+    python3.12 --version
+    ```
+
+- **Pacotes**:
 
     ```bash
     pip install readchar
     ```
     ```bash
     pip install pytest
+    ```
+- **Dependências do Sistema**:
+
+    ```bash
+    sudo apt install doxygen
     ```
 
