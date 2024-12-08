@@ -18,4 +18,3 @@ clean:
 	rm -rf $(TEST_DIR)/__pycache__
 	rm -rf $(SRC_DIR)/__pycache__
 	rm -rf .pytest_cache
-	rm -f *.pkl
