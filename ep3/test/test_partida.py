@@ -272,30 +272,29 @@ class Test_Partida():
         ]
         assert partida_teste.matriz_jogo == matriz_esperada_rotacao_esquerda
         
-    # def test_peça_não_rotaciona(self, partida_teste):
+    def test_peça_não_rotaciona(self, partida_teste):
         
-    #     # desenhamos ela no topo, sem chance de rotacionar
-    #     partida_teste.peça_atual.pos_x = 0 
-    #     partida_teste.peça_atual.pos_y = 0
-    #     partida_teste.peça_atual.matriz_peça = partida_teste.peça_atual.gera_peça("T")
-    #     partida_teste.desenha_peça_na_matriz()
+        # desenhamos ela na base, sem chance de rotacionar
+        partida_teste.peça_atual.pos_x = 8
+        partida_teste.peça_atual.pos_y = 3
+        partida_teste.peça_atual.matriz_peça = partida_teste.peça_atual.gera_peça("T")
+        partida_teste.desenha_peça_na_matriz()
 
-    #     matriz_antes_rotacao = [
-    #         ["+", "+", "+", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", "+", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #         [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "]
-    #     ]   
+        matriz_antes_rotacao = [
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
+            [" ", " ", " ", "+", "+", "+", " ", " ", " ", " "],
+            [" ", " ", " ", " ", "+", " ", " ", " ", " ", " "],
+        ]   
         
-
-    #     partida_teste.movimento_rotaciona("direita")
-    #     assert partida_teste.matriz_jogo == matriz_antes_rotacao # não mudou 
+        partida_teste.movimento_rotaciona("direita")
+        assert partida_teste.matriz_jogo == matriz_antes_rotacao # não mudou 
 
     def test_grava_sai_partida(self, partida_teste):
         
