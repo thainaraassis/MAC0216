@@ -30,6 +30,9 @@ Textris é uma versão simplificada do clássico jogo de Tetris, desenvolvida pa
         ```bash
         pip install readchar
         ```
+        ```bash
+        pip install pytest
+        ```
 
     4. Executar o Programa:
 
