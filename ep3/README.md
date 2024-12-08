@@ -1,17 +1,15 @@
-# EP3 - TEXTRIS
+## EP3 - TEXTRIS
 
-## AUTOR(ES): com nome, NUSP e endereço de e-mail
+# AUTOR(ES): 
 
 - Júlia Calixto Rosa, 13749490, juliacalixtorosa@usp.br
 - Thainara Assis
 
-## DESCRIÇÃO:
+# DESCRIÇÃO:
 
 Textris é uma versão simplificada do clássico jogo de Tetris, desenvolvida para ser jogada no terminal. O jogo exibe um tabuleiro de Tetris em formato de matriz no terminal, e o jogador pode controlar as peças utilizando as teclas do teclado.
 
-## COMO EXECUTAR:
-
-Explicando como o programa deve ser executado, os eventuais argumentos de linha de comando do programa (o que é o argumento, como ele precisa estar formatado, etc.). Fale também sobre como a documentação é gerada.
+# COMO EXECUTAR:
 
 - Utilizamos um ambiente virtual para executar o programa. Para isso, siga os passos abaixo:
 
@@ -45,13 +43,13 @@ Explicando como o programa deve ser executado, os eventuais argumentos de linha 
         deactivate
         ```
 
-- Para gerar a documentação, siga as instruções pertinentes para o seu projeto.
+- Para gerar a documentação, siga os passos abaixo:
 
-## TESTES:
+# TESTES:
 
 Foram realizados testes unitários utilizando a ferramenta pytest para garantir o funcionamento correto das principais funcionalidades do sistema. Os testes estão localizados na pasta `test/`, e cada arquivo de teste corresponde a um conjunto de verificações para os principais métodos e componentes que são essenciais para o funcionamento do jogo.
 
-## DEPENDÊNCIAS:
+# DEPENDÊNCIAS:
 
 - Sistema Operacional: Ubuntu 24.04 LTS
 - Python: 3.12.3
