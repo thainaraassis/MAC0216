@@ -4,13 +4,39 @@ import pickle
 import os
 
 class Jogo:
+    """
+    Classe principal que gerencia o jogo.
 
+    A classe 'Jogo' gerencia a execução do jogo, permitindo que o jogador inicie uma nova partida,
+    carregue uma partida salva, veja o ranking e saia do jogo. A classe mantém o controle das partidas 
+    salvas e interage com o sistema de pontuação e salvamento.
+    """
     arquivos_gravados =[]
 
     def __init__(self):
+        """
+        Inicializa a classe Jogo.
+
+        O construtor inicializa o objeto 'partida' como 'None', já que a partida será iniciada
+        através das opções do menu.
+        """
         self.partida = None
 
     def menu(self):
+        """
+        Exibe o menu principal do jogo e gerencia as opções do jogador.
+
+        O método apresenta as opções de início de partida, carregamento de partidas salvas, exibição de
+        ranking e saída do jogo. O jogador pode escolher uma dessas opções, e o método chamará os métodos
+        correspondentes para cada ação.
+
+        As opções disponíveis são:
+        - Iniciar nova partida
+        - Carregar uma partida salva
+        - Exibir ranking
+        - Sair do jogo
+        """
+
         print("*** Jogo Textris - um tetris em modo texto ***")
         while True:
             print("Opções do jogo:")
@@ -33,6 +59,13 @@ class Jogo:
                 print("Opção inválida!")
     
     def iniciar_partida(self):
+        """
+        Inicia uma nova partida.
+
+        Este método solicita ao jogador o seu nome e as dimensões da tela (número de linhas e colunas),
+        e cria um novo objeto 'Partida'. Após a criação da partida, o método inicia a execução do jogo.
+
+        """
 
         nome_jogador = input("Digite o nome do jogador: ")
         num_linhas = input("Digite o número de linhas da tela do jogo: ")
