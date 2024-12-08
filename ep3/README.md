@@ -1,9 +1,9 @@
 # EP3 - TEXTRIS
 
-### AUTOR(ES): 
+### AUTORES: 
 
-- Júlia Calixto Rosa, 13749490, juliacalixtorosa@usp.br
-- Thainara Assis
+- Júlia Calixto Rosa - 13749490 - juliacalixtorosa@usp.br
+- Thainara de Assis Goulart - 13874413 - thainaraassisgoulart@usp.br
 
 ### DESCRIÇÃO:
 
