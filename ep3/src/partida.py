@@ -110,10 +110,6 @@ class Partida:
                 self.grava_sai_partida()
                 break
             else:
-                print("--------------")
-                print("Tecla inválida")
-                print("--------------")
-                sleep(1)
                 self.tela.limpa_tela()
                 self.tela.exibe_matriz()
                 self.tela.exibe_comandos(self.pontuacao)
