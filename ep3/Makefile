@@ -1,4 +1,4 @@
-.PHONY: all doc tests clean
+.PHONY: doc tests clean
 
 DOC_DIR = docs
 SRC_DIR = src
