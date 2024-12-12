@@ -63,15 +63,19 @@ A implementação do projeto segue os princípios da programação orientada a o
         ```bash
         sudo apt install doxygen
         ```
-    
-    2. Geração da documentação:
+    2. Certifique-se de que o Graphviz está instalado:
+        ```bash
+        sudo apt install graphviz
+        ```
+
+    3. Geração da documentação:
         ```bash
         make doc
         ```
 
-    3. Acesse a documentação gerada no navegador:
+    4. Acesse a documentação gerada no navegador:
         ```bash
-        Abra o arquivo docs/html/index.html.
+        xdg-open docs/html/index.html
         ```
 
 
@@ -111,5 +115,9 @@ Os testes estão localizados na pasta `test/`, e cada arquivo de teste correspon
 
     ```bash
     sudo apt install doxygen
+    ```
+
+    ```bash
+    sudo apt install graphviz
     ```
 
