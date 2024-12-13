@@ -1,6 +1,6 @@
 class Movimento:
     """
-    Classe que contém métodos estáticos responsáveis por verificar e realizar os movimentos das peças no jogo.
+    Classe que contém métodos estáticos responsáveis por verificar os movimentos das peças no jogo.
 
     Esses métodos permitem que as peças se movam para a esquerda, direita, para baixo, além de rotacioná-las. 
     Eles verificam as condições necessárias para o movimento, como limites da matriz e colisões com outras peças.
