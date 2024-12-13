@@ -89,7 +89,7 @@ Os testes estão localizados na pasta `test/`, e cada arquivo de teste correspon
 - Para executar os testes, rode o comando:
 
     ```bash
-    make test
+    make tests
     ```
 
 ## DEPENDÊNCIAS:
